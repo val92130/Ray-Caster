@@ -31,11 +31,11 @@ namespace _3DRayCast
         {
             
 
-            map = new Map(36, 36, 1);
-            player = new Player(22, 12, -1, 0, map);
+            map = new Map(32, 32, 1);
+            player = new Player(map.Size.Width / 2, map.Size.Height / 2, -1, 0, map);
             InitializeComponent();
 
-            editor = new Editor(map);
+            editor = new Editor(map, player);
             editor.Show();
 
             t = new Timer();
@@ -131,9 +131,12 @@ namespace _3DRayCast
                 else
                     perpWallDist = Math.Abs((mapY - rayPosY + (1 - stepY) / 2) / rayDirY);
 
+
+
                 map[mapX, mapY].Distance = perpWallDist;
 
                 //Calculate height of line to draw on screen
+                // this.Height is the height of a wall
                 int lineHeight = Math.Abs((int)(this.Height / perpWallDist));
 
                 //calculate lowest and highest pixel to fill in current stripe
@@ -230,6 +233,11 @@ namespace _3DRayCast
             }
 
                     
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

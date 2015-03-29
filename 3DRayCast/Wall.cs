@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace _3DRayCast
 {
+    [Serializable]
     public class Wall
     {
         bool _collision;
@@ -55,6 +56,10 @@ namespace _3DRayCast
                 }
 
                 return Color.FromArgb(255, _color.R, _color.G, _color.B);
+            }
+            set
+            {
+                _color = value;
             }
         }
 

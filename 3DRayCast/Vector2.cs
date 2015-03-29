@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace _3DRayCast
 {
+    [Serializable]
     public class Vector2
     {
         double x, y;

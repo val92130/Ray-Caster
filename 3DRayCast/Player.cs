@@ -12,6 +12,7 @@ namespace _3DRayCast
         double speed, rotationSpeed;
         bool isMoving;
         const float maxSpeed = 1;
+        double _maxVisibleDistance = 30;
         Map map;
         public Player(double x, double y, double dirX, double dirY, Map map)
         {
@@ -21,6 +22,14 @@ namespace _3DRayCast
             this.rotationSpeed = 0.04;
             this.map = map;
             this.velocity = new Vector2(0, 0);
+        }
+
+        public double MaxVisibleDistance
+        {
+            get
+            {
+                return _maxVisibleDistance;
+            }
         }
 
         public double Speed
