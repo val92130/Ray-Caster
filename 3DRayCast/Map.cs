@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace _3DRayCast
 {
-    class Map
+    public class Map
     {
         Wall[,] _walls;
         int _mapWidth, _mapHeight;
@@ -24,7 +24,7 @@ namespace _3DRayCast
             {
                 for (int j = 0; j < this._mapHeight ; j++)
                 {
-                    _walls[i, j] = new Wall(false, new Vector2(i * wallWidth, j * wallWidth), Color.Purple);
+                    _walls[i, j] = new Wall(false, new Vector2(i * wallWidth, j * wallWidth), Color.Aqua);
                     if (j == 0 || j == _mapWidth / wallWidth - 1)
                     {
                         _walls[i, j].IsCollider = true;
@@ -46,7 +46,7 @@ namespace _3DRayCast
         {
             get
             {
-                if( x >= Math.Sqrt(_walls.Length) || y >= Math.Sqrt(_walls.Length))
+                if (x >= this.Size.Width || y >= this.Size.Height)
                 {
                     return null;
                 }

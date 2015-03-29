@@ -46,6 +46,12 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="EDirection.cs" />
+    <Compile Include="Editor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor.Designer.cs">
+      <DependentUpon>Editor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,6 +65,9 @@
     <Compile Include="Vector2.cs" />
     <Compile Include="ViewPlane.cs" />
     <Compile Include="Wall.cs" />
+    <EmbeddedResource Include="Editor.resx">
+      <DependentUpon>Editor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

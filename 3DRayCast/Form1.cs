@@ -16,20 +16,34 @@ namespace _3DRayCast
         Bitmap bmp;
         Timer t;
 
-        Player player = new Player(22, 12, -1, 0);
-        ViewPlane viewPlane = new ViewPlane(0, 0.66);
-        Map map = new Map(36, 36, 1);
+        
 
+        // Fov of the viewPlane is  * atan(0.66/1.0) = 66° 
+        ViewPlane viewPlane = new ViewPlane(0, 0.66);
+        Map map ;
+        Player player;
         bool forward, backward, left, right;
+
+        Editor editor;
 
 
         public Form1()
         {
+            
+
+            map = new Map(36, 36, 1);
+            player = new Player(22, 12, -1, 0, map);
             InitializeComponent();
+
+            editor = new Editor(map);
+            editor.Show();
+
             t = new Timer();
             t.Interval = 10;
             t.Tick += new EventHandler(T_loop);
             t.Start();
+
+            
         }
 
         private void T_loop(object sender, EventArgs e)
@@ -45,9 +59,10 @@ namespace _3DRayCast
                 double rayPosY = player.Position.Y;
                 double rayDirX = player.Direction.X + viewPlane.Position.X * cameraX;
                 double rayDirY = player.Direction.Y + viewPlane.Position.Y * cameraX;
+
                 //which box of the map we're in  
                 int mapX = (int)rayPosX;
-                int mapY = (int)(rayPosY);
+                int mapY = (int)rayPosY;
 
 
                 //length of ray from current position to next x or y-side
@@ -116,6 +131,8 @@ namespace _3DRayCast
                 else
                     perpWallDist = Math.Abs((mapY - rayPosY + (1 - stepY) / 2) / rayDirY);
 
+                map[mapX, mapY].Distance = perpWallDist;
+
                 //Calculate height of line to draw on screen
                 int lineHeight = Math.Abs((int)(this.Height / perpWallDist));
 
@@ -135,7 +152,7 @@ namespace _3DRayCast
 
                 _screenG.DrawLine(Pens.Gray, new Point(x, 0), new Point(x, drawEnd)); // draw ceil
                 _screenG.DrawLine(new Pen(color), new Point(x, drawStart), new Point(x, drawEnd));
-                _screenG.DrawLine(Pens.DarkOliveGreen, new Point(x, this.Height), new Point(x, drawEnd)); // draw floor
+                _screenG.DrawLine(Pens.DarkGray, new Point(x, this.Height), new Point(x, drawEnd)); // draw floor
             }
 
             if (forward)
@@ -146,6 +163,17 @@ namespace _3DRayCast
             {
                 player.Move(EDirection.BackWard);
             } 
+
+            if(left)
+            {
+                player.Rotate(EDirection.Left);
+                viewPlane.Rotate(EDirection.Left, player);
+
+            } else if(right)
+            {
+                player.Rotate(EDirection.Right);
+                viewPlane.Rotate(EDirection.Right, player);
+            }
 
         }
 
@@ -169,18 +197,12 @@ namespace _3DRayCast
                     forward = false;
                     break;
                 case Keys.D:
-                    player.Direction.X = player.Direction.X * Math.Cos(-player.RotationSpeed) - player.Direction.Y * Math.Sin(-player.RotationSpeed);
-                    player.Direction.Y = player.Direction.X * Math.Sin(-player.RotationSpeed) + player.Direction.Y * Math.Cos(-player.RotationSpeed);
-                    double oldPlaneX = viewPlane.Position.X;
-                    viewPlane.Position.X = viewPlane.Position.X * Math.Cos(-player.RotationSpeed) - viewPlane.Position.Y * Math.Sin(-player.RotationSpeed);
-                    viewPlane.Position.Y = oldPlaneX * Math.Sin(-player.RotationSpeed) + viewPlane.Position.Y * Math.Cos(-player.RotationSpeed);
+                    right = true;
+                    left = false;
                     break;
                 case Keys.Q:
-                    player.Direction.X = player.Direction.X * Math.Cos(player.RotationSpeed) - player.Direction.Y * Math.Sin(player.RotationSpeed);
-                    player.Direction.Y = player.Direction.X * Math.Sin(player.RotationSpeed) + player.Direction.Y * Math.Cos(player.RotationSpeed);
-                    double oldPlaneX2 = viewPlane.Position.X;
-                    viewPlane.Position.X = viewPlane.Position.X * Math.Cos(player.RotationSpeed) - viewPlane.Position.Y * Math.Sin(player.RotationSpeed);
-                    viewPlane.Position.Y = oldPlaneX2 * Math.Sin(player.RotationSpeed) + viewPlane.Position.Y * Math.Cos(player.RotationSpeed);
+                    right = false;
+                    left = true;
                     break;
             }
         }
@@ -196,6 +218,14 @@ namespace _3DRayCast
                 case Keys.S:
                     backward = false;
                     forward = false;
+                    break;
+                case Keys.D:
+                    right = false;
+                    left = false;
+                    break;
+                case Keys.Q:
+                    right = false;
+                    left = false;
                     break;
             }
 

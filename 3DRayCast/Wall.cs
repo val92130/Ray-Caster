@@ -12,6 +12,8 @@ namespace _3DRayCast
         bool _collision;
         Vector2 _position;
         Color _color;
+        double _distance;
+        double _maxVisibleDistance = 30;
         public Wall(bool collision, Vector2 position, Color color)
         {
             this._collision = collision;
@@ -43,7 +45,28 @@ namespace _3DRayCast
         {
             get
             {
-                return this._color;
+                int r = _color.R;
+                int g = _color.G;
+                int b = _color.B;
+
+                if (this.Distance > _maxVisibleDistance)
+                {
+                    return Color.FromArgb(r / (int)(this.Distance), g/(int)(this.Distance), b/(int)(this.Distance)) ;
+                }
+
+                return Color.FromArgb(255, _color.R, _color.G, _color.B);
+            }
+        }
+
+        public double Distance
+        {
+            get
+            {
+                return _distance;
+            }
+            set
+            {
+                _distance = value;
             }
         }
     }

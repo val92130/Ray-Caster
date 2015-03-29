@@ -12,12 +12,14 @@ namespace _3DRayCast
         double speed, rotationSpeed;
         bool isMoving;
         const float maxSpeed = 1;
-        public Player(double x, double y, double dirX, double dirY)
+        Map map;
+        public Player(double x, double y, double dirX, double dirY, Map map)
         {
             this.position = new Vector2(x, y);
             this.direction = new Vector2(dirX, dirY);
             this.speed = 0.1;
-            this.rotationSpeed = 0.05;
+            this.rotationSpeed = 0.04;
+            this.map = map;
             this.velocity = new Vector2(0, 0);
         }
 
@@ -67,8 +69,24 @@ namespace _3DRayCast
             }
         }
 
+        public void Rotate(EDirection direction)
+        {
+            switch(direction)
+            {
+                case EDirection.Left:
+                    this.Direction.X = this.Direction.X * Math.Cos(this.RotationSpeed) - this.Direction.Y * Math.Sin(this.RotationSpeed);
+                    this.Direction.Y = this.Direction.X * Math.Sin(this.RotationSpeed) + this.Direction.Y * Math.Cos(this.RotationSpeed);
+                    break;
+                case EDirection.Right:
+                    this.Direction.X = this.Direction.X * Math.Cos(-this.RotationSpeed) - this.Direction.Y * Math.Sin(-this.RotationSpeed);
+                    this.Direction.Y = this.Direction.X * Math.Sin(-this.RotationSpeed) + this.Direction.Y * Math.Cos(-this.RotationSpeed);
+                    break;
+            }
+        }
+
         public void Update()
         {
+
             this.Position.X += this.velocity.X * this.Direction.X;
             this.Position.Y += this.velocity.Y * this.Direction.Y;
 
